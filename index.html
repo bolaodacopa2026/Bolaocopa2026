@@ -15,6 +15,7 @@ header::after{content:'';position:absolute;inset:0;background:radial-gradient(el
 .hero-sub span{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.11);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:rgba(255,255,255,.78)}
 .bann{padding:9px 18px;font-size:12px;display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap;line-height:1.55}
 .bann.ok{background:#042016;border-left:3px solid #16a34a;color:#86efac}
+.bann.inf{background:#071825;border-left:3px solid #3b82f6;color:#93c5fd}
 nav{display:flex;background:var(--c1);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none}
 nav::-webkit-scrollbar{display:none}
 nav button{padding:12px 17px;background:none;border:none;color:var(--sub);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;transition:all .15s;user-select:none}
@@ -25,6 +26,8 @@ nav button:not(.on):hover{color:var(--tx);background:rgba(255,255,255,.03)}
 .sh-l .sh-tag{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--sub);display:block;margin-bottom:3px}
 .sh-l .sh-title{font-size:19px;font-weight:900;color:var(--tx);letter-spacing:-.2px}
 .prize{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,rgba(255,215,0,.17),rgba(255,215,0,.05));border:1px solid rgba(255,215,0,.3);border-radius:20px;padding:5px 14px;color:var(--am);font-size:12px;font-weight:700;white-space:nowrap}
+.tie-info{font-size:11px;color:var(--sub);margin-bottom:14px;padding:10px 13px;background:var(--c2);border-radius:8px;border-left:3px solid rgba(255,215,0,.4);line-height:1.7}
+.tie-info strong{color:var(--am)}
 select,input[type=password],input[type=number]{background:var(--c1);border:1px solid var(--bd);color:var(--tx);padding:7px 11px;border-radius:7px;font-size:13px;outline:none;transition:border-color .15s}
 select:focus,input:focus{border-color:var(--g)}select{cursor:pointer}
 .fbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
@@ -117,8 +120,11 @@ tr:last-child td{border-bottom:none}tr:hover td{background:rgba(255,255,255,.02)
     <span>🎯 18 pts</span><span>⭐ 12 pts</span><span>✅ 9 pts</span><span>3️⃣ 3 pts</span>
   </div>
 </div></header>
-<div class="bann ok">✅ <div><strong>16 jogos disputados.</strong>
-Viny Alves corrigido: Jogo 20 (Áustria × Jordânia) agora registrado como 2×0. Todos os 38 participantes com 72 palpites completos.</div></div>
+<div class="bann ok">✅ <div><strong>20 jogos disputados.</strong>
+Novos resultados: França 3×1 Senegal · Iraque 1×4 Noruega · Argentina 3×0 Argélia · Áustria 3×1 Jordânia.
+Desempate automático ativo: 18pts → 12pts → 9pts → 3pts. Viny Alves Jogo 20 corrigido.</div></div>
+<div class="bann inf">ℹ️ <div><strong>Critério de desempate:</strong> empate em pontos totais é resolvido automaticamente por: 
+(1) maior nº de acertos de 18 pts · (2) maior nº de 12 pts · (3) maior nº de 9 pts · (4) maior nº de 3 pts.</div></div>
 <nav>
 <button class="on" onclick="tab('ranking',this)">🏅 Prêmio Bidu</button>
 <button onclick="tab('r18',this)">🎯 Prêmio Maurício Carvalho</button>
@@ -134,6 +140,10 @@ Viny Alves corrigido: Jogo 20 (Áustria × Jordânia) agora registrado como 2×0
     <span class="prize">🏆 Prêmio Bidu</span>
   </div>
 </div>
+<div class="tie-info">
+  🔀 <strong>Critério de desempate automático:</strong>
+  Empate em pontos totais → desempate por: 1º maior nº de acertos <strong>18 pts</strong> · 2º maior nº de <strong>12 pts</strong> · 3º maior nº de <strong>9 pts</strong> · 4º maior nº de <strong>3 pts</strong>
+</div>
 <div class="rg" id="rank-list"></div>
 </div>
 <div id="tab-r18" class="pg">
@@ -141,7 +151,7 @@ Viny Alves corrigido: Jogo 20 (Áustria × Jordânia) agora registrado como 2×0
   <div class="sh-l"><span class="sh-tag">Acertos de Placar Exato</span><span class="sh-title">Prêmio Maurício Carvalho 🎯</span></div>
   <span class="prize">🎯 Prêmio Maurício Carvalho</span>
 </div>
-<p style="font-size:12px;color:var(--sub);margin-bottom:14px;line-height:1.6">Ranking exclusivo de <strong style="color:#fbbf24">placar exato (18 pts)</strong>. Desempate: maior pontuação total.</p>
+<p style="font-size:12px;color:var(--sub);margin-bottom:14px;line-height:1.6">Ranking exclusivo de <strong style="color:#fbbf24">placar exato (18 pts)</strong>. Desempate: maior pontuação total → critérios de desempate do ranking geral.</p>
 <div class="rg" id="rank18-list"></div>
 </div>
 <div id="tab-jogos" class="pg">
@@ -220,10 +230,10 @@ const GAMES=[
 {"id":14,"t1":"Bélgica","t2":"Egito","s1":1,"s2":1,"played":true,"h":"15/06·16h","fase":"Fase de Grupos"},
 {"id":15,"t1":"Arábia Saudita","t2":"Uruguai","s1":1,"s2":1,"played":true,"h":"15/06·19h","fase":"Fase de Grupos"},
 {"id":16,"t1":"Irã","t2":"Nova Zelândia","s1":2,"s2":2,"played":true,"h":"15/06·22h","fase":"Fase de Grupos"},
-{"id":17,"t1":"França","t2":"Senegal","s1":null,"s2":null,"played":false,"h":"16/06·16h","fase":"Fase de Grupos"},
-{"id":18,"t1":"Iraque","t2":"Noruega","s1":null,"s2":null,"played":false,"h":"16/06·19h","fase":"Fase de Grupos"},
-{"id":19,"t1":"Argentina","t2":"Argélia","s1":null,"s2":null,"played":false,"h":"16/06·22h","fase":"Fase de Grupos"},
-{"id":20,"t1":"Áustria","t2":"Jordânia","s1":null,"s2":null,"played":false,"h":"17/06·01h","fase":"Fase de Grupos"},
+{"id":17,"t1":"França","t2":"Senegal","s1":3,"s2":1,"played":true,"h":"16/06·16h","fase":"Fase de Grupos"},
+{"id":18,"t1":"Iraque","t2":"Noruega","s1":1,"s2":4,"played":true,"h":"16/06·19h","fase":"Fase de Grupos"},
+{"id":19,"t1":"Argentina","t2":"Argélia","s1":3,"s2":0,"played":true,"h":"16/06·22h","fase":"Fase de Grupos"},
+{"id":20,"t1":"Áustria","t2":"Jordânia","s1":3,"s2":1,"played":true,"h":"17/06·01h","fase":"Fase de Grupos"},
 {"id":21,"t1":"Portugal","t2":"RD Congo","s1":null,"s2":null,"played":false,"h":"17/06·14h","fase":"Fase de Grupos"},
 {"id":22,"t1":"Inglaterra","t2":"Croácia","s1":null,"s2":null,"played":false,"h":"17/06·17h","fase":"Fase de Grupos"},
 {"id":23,"t1":"Gana","t2":"Panamá","s1":null,"s2":null,"played":false,"h":"17/06·20h","fase":"Fase de Grupos"},
@@ -318,12 +328,21 @@ function setModAv(pid){const el=document.getElementById('m-av'),src=PH[String(pi
 function pts(g1,g2,r1,r2){if([g1,g2,r1,r2].some(x=>x==null))return null;const br=g1>g2?1:g1<g2?-1:0,rr=r1>r2?1:r1<r2?-1:0;if(g1===r1&&g2===r2)return 18;if(br===rr)return(g1===r1||g2===r2)?12:9;return(g1===r1||g2===r2)?3:0;}
 function stat(pid){const p=P[pid];let tot=0,c18=0,c12=0,c9=0,c3=0,c0=0;GAMES.forEach(g=>{const gs=GS[g.id],b=p.bets[g.id];if(!b)return;const v=pts(b.g1,b.g2,gs.s1,gs.s2);if(v==null)return;tot+=v;if(v===18)c18++;else if(v===12)c12++;else if(v===9)c9++;else if(v===3)c3++;else c0++;});return{tot,c18,c12,c9,c3,c0};}
 function bdg(v){if(v==null)return'<span class="bdg bnd">⏳</span>';return`<span class="bdg b${v}">${v} pts</span>`;}
-function ranked(){return Object.keys(P).map(id=>({id,...stat(id),name:P[id].name})).sort((a,b)=>b.tot-a.tot||(a.name.localeCompare(b.name,'pt')));}
-function ranked18(){const rk=ranked(),pm={};rk.forEach((p,i)=>pm[p.id]=i);return Object.keys(P).map(id=>({id,...stat(id),name:P[id].name,_rk:pm[id]})).sort((a,b)=>b.c18-a.c18||a._rk-b._rk);}
+// ═══ RANKING COM DESEMPATE COMPLETO ═══
+// Critério: pontos totais → 18pts → 12pts → 9pts → 3pts → nome
+function ranked(){
+  return Object.keys(P).map(id=>({id,...stat(id),name:P[id].name}))
+    .sort((a,b)=>b.tot-a.tot||b.c18-a.c18||b.c12-a.c12||b.c9-a.c9||b.c3-a.c3||a.name.localeCompare(b.name,'pt'));
+}
+function ranked18(){
+  const rk=ranked(),pm={};rk.forEach((p,i)=>pm[p.id]=i);
+  return Object.keys(P).map(id=>({id,...stat(id),name:P[id].name,_rk:pm[id]}))
+    .sort((a,b)=>b.c18-a.c18||a._rk-b._rk);
+}
 function chkPwd(){const v=document.getElementById('pwd').value,msg=document.getElementById('pmsg'),inp=document.getElementById('pwd');if(v===PWD){edOK=true;msg.textContent='✅ Modo editor ativo';msg.style.color='#34d399';inp.style.borderColor='#34d399';rJogos();}else{msg.textContent='❌ Senha incorreta';msg.style.color='#f87171';inp.style.borderColor='#f87171';}}
 function rRank(){document.getElementById('info-jogos').textContent=GAMES.filter(g=>GS[g.id].played).length+' de 104 jogos disputados';document.getElementById('rank-list').innerHTML=ranked().map((p,i)=>{const pos=i+1,cl=pos===1?'g1':pos===2?'g2':pos===3?'g3':'';const medal=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos;return`<div class="rrow ${cl}" onclick="oMod('${p.id}')"><div class="rpos">${medal}</div><div class="rmid">${avEl(p.id)}<div class="rtxt"><div class="rname">${p.name}</div><div class="rpills">${p.c18?`<span class="pill p18">${p.c18}×18</span>`:''} ${p.c12?`<span class="pill p12">${p.c12}×12</span>`:''} ${p.c9?`<span class="pill p9">${p.c9}×9</span>`:''} ${p.c3?`<span class="pill p3">${p.c3}×3</span>`:''} ${p.c0?`<span class="pill p0">${p.c0}×0</span>`:''}</div></div></div><div class="rpts">${p.tot}</div></div>`;}).join('');}
 function rRank18(){document.getElementById('rank18-list').innerHTML=ranked18().map((p,i)=>{const pos=i+1,cl=pos===1?'g1':pos===2?'g2':pos===3?'g3':'';const medal=pos===1?'🥇':pos===2?'🥈':pos===3?'🥉':pos;return`<div class="rrow ${cl}" onclick="oMod('${p.id}')"><div class="rpos">${medal}</div><div class="rmid">${avEl(p.id)}<div class="rtxt"><div class="rname">${p.name}</div><div class="rpills"><span class="pill p18">${p.c18} placar${p.c18!==1?'es':''} exato${p.c18!==1?'s':''}</span><span class="pill" style="background:rgba(100,120,160,.15);color:var(--sub)">${p.tot} pts total</span></div></div></div><div class="r18val"><div class="r18big">🎯 ${p.c18}</div><div class="r18sm">${p.c18*18} pts</div></div></div>`;}).join('');}
-function rJogos(){const f=document.getElementById('fst').value;const list=GAMES.filter(g=>f===''?true:f==='grupos'?g.id<=72:f==='elim'?g.id>72:f==='1'?GS[g.id].played:!GS[g.id].played);const byFase={};list.forEach(g=>{if(!byFase[g.fase])byFase[g.fase]=[];byFase[g.fase].push(g);});const fO=['Fase de Grupos','Rodada de 32','Oitavas de Final','Quartas de Final','Semifinal','3º Lugar','Final 🏆'];let html='';fO.forEach(fase=>{if(!byFase[fase])return;const ic=fase==='Final 🏆'?'🏆':fase==='3º Lugar'?'🥉':fase==='Semifinal'?'⚡':fase==='Quartas de Final'?'⚡':fase==='Oitavas de Final'?'🔥':fase==='Rodada de 32'?'🎯':'📋';html+=`<div class="fase-hdr">${ic} ${fase}</div><div class="jg">`;byFase[fase].forEach(g=>{const gs=GS[g.id];const isTbd=g.t1==='A definir';const sc=gs.played?`<div class="jsc">${gs.s1} — ${gs.s2}</div>`:isTbd?`<div class="jsc tbd">A definir</div>`:`<div class="jsc nd">? — ?</div>`;const stC=gs.played?'ok':isTbd?'tbd':'nd';const stT=gs.played?'✅ Disputado':isTbd?'🕐 A definir':'⏳ Pendente';const ed=edOK?`<div class="erow"><input type="number" min="0" max="30" id="i1-${g.id}" value="${gs.s1??''}" placeholder="0"><span class="esep">×</span><input type="number" min="0" max="30" id="i2-${g.id}" value="${gs.s2??''}" placeholder="0"><button class="btn btn-g" onclick="svG(${g.id})" style="font-size:11px;padding:5px 10px">💾</button>${gs.played?`<button class="btn btn-rm" onclick="rmG(${g.id})" style="font-size:11px;padding:5px 8px">✕</button>`:''}</div>${isTbd?`<div class="time-edit"><input type="text" id="t1-${g.id}" value="${gs.t1}" placeholder="Time 1"><input type="text" id="t2-${g.id}" value="${gs.t2}" placeholder="Time 2"><button class="btn btn-g" onclick="svT(${g.id})" style="font-size:11px;padding:5px 10px">✏️</button></div>`:''}`:'' ;html+=`<div class="jcard"><div class="jh"><span class="jnum">Jogo ${g.id}${g.h!=='TBD'?' · '+g.h:''}</span><span class="jst ${stC}">${stT}</span></div><div class="jpl"><div class="jt">${gs.t1}</div>${sc}<div class="jt">${gs.t2}</div></div>${ed}</div>`;});html+='</div>';});document.getElementById('jogos-wrap').innerHTML=html||'<p style="color:var(--sub);text-align:center;padding:28px">Nenhum jogo.</p>';}
+function rJogos(){const f=document.getElementById('fst').value;const list=GAMES.filter(g=>f===''?true:f==='grupos'?g.id<=72:f==='elim'?g.id>72:f==='1'?GS[g.id].played:!GS[g.id].played);const byFase={};list.forEach(g=>{if(!byFase[g.fase])byFase[g.fase]=[];byFase[g.fase].push(g);});const fO=['Fase de Grupos','Rodada de 32','Oitavas de Final','Quartas de Final','Semifinal','3º Lugar','Final 🏆'];let html='';fO.forEach(fase=>{if(!byFase[fase])return;const ic=fase==='Final 🏆'?'🏆':fase==='3º Lugar'?'🥉':fase==='Semifinal'?'⚡':fase==='Quartas de Final'?'⚡':fase==='Oitavas de Final'?'🔥':fase==='Rodada de 32'?'🎯':'📋';html+=`<div class="fase-hdr">${ic} ${fase}</div><div class="jg">`;byFase[fase].forEach(g=>{const gs=GS[g.id];const isTbd=g.t1==='A definir';const sc=gs.played?`<div class="jsc">${gs.s1} — ${gs.s2}</div>`:isTbd?`<div class="jsc tbd">A definir</div>`:`<div class="jsc nd">? — ?</div>`;const stC=gs.played?'ok':isTbd?'tbd':'nd';const stT=gs.played?'✅ Disputado':isTbd?'🕐 A definir':'⏳ Pendente';const ed=edOK?`<div class="erow"><input type="number" min="0" max="30" id="i1-${g.id}" value="${gs.s1??''}" placeholder="0"><span class="esep">×</span><input type="number" min="0" max="30" id="i2-${g.id}" value="${gs.s2??''}" placeholder="0"><button class="btn btn-g" onclick="svG(${g.id})" style="font-size:11px;padding:5px 10px">💾</button>${gs.played?`<button class="btn btn-rm" onclick="rmG(${g.id})" style="font-size:11px;padding:5px 8px">✕</button>`:''}</div>${isTbd?`<div class="time-edit"><input type="text" id="t1-${g.id}" value="${gs.t1}" placeholder="Time 1"><input type="text" id="t2-${g.id}" value="${gs.t2}" placeholder="Time 2"><button class="btn btn-g" onclick="svT(${g.id})" style="font-size:11px;padding:5px 10px">✏️</button></div>`:''}`:''  ;html+=`<div class="jcard"><div class="jh"><span class="jnum">Jogo ${g.id}${g.h!=='TBD'?' · '+g.h:''}</span><span class="jst ${stC}">${stT}</span></div><div class="jpl"><div class="jt">${gs.t1}</div>${sc}<div class="jt">${gs.t2}</div></div>${ed}</div>`;});html+='</div>';});document.getElementById('jogos-wrap').innerHTML=html||'<p style="color:var(--sub);text-align:center;padding:28px">Nenhum jogo.</p>';}
 function svG(id){const v1=parseInt(document.getElementById(`i1-${id}`).value);const v2=parseInt(document.getElementById(`i2-${id}`).value);if(isNaN(v1)||isNaN(v2)||v1<0||v2<0){alert('Informe dois números ≥ 0.');return}GS[id]={...GS[id],s1:v1,s2:v2,played:true};all();}
 function rmG(id){if(!confirm(`Remover resultado do Jogo ${id}?`))return;GS[id]={...GS[id],s1:null,s2:null,played:false};all();}
 function svT(id){const t1=document.getElementById(`t1-${id}`)?.value.trim();const t2=document.getElementById(`t2-${id}`)?.value.trim();if(t1)GS[id].t1=t1;if(t2)GS[id].t2=t2;all();}
