@@ -401,19 +401,33 @@ function rPP(){
   const pos = rankedList().findIndex(x=>x.participant_id===pid)+1;
   document.getElementById('pp-info').innerHTML = `<div class="pinfo">${avatarHtml(part,'pav-lg',56)}<div><div class="pname">${part.name}</div><div class="pmeta">${pos}º lugar · <strong style="color:var(--g)">${p.tot} pontos</strong></div></div></div><div class="sbs">${statBoxesHtml(p)}</div>`;
   const myBets = BETS.filter(b=>b.participant_id===pid);
-  const rows = GAMES.map(g=>{
+  const isAdmin = !!me?.is_admin;
+  const gamesList = isAdmin ? GAMES : GAMES.filter(g=>myBets.some(x=>x.game_id===g.id));
+  const rows = gamesList.map(g=>{
     const b = myBets.find(x=>x.game_id===g.id);
-    if(!b) return null;
-    const v = pts(b.g1,b.g2,g.s1,g.s2), vs = v==null?'null':String(v);
+    const v = b? pts(b.g1,b.g2,g.s1,g.s2) : null, vs = v==null?'null':String(v);
     if(pf && vs!==pf) return null;
     const res = g.played? `${g.s1}×${g.s2}` : `<span style="color:var(--sub)">—</span>`;
-    return `<tr><td style="color:var(--sub);width:28px">${g.id}</td><td style="color:var(--dim);font-size:11px;white-space:nowrap">${g.fase.replace(' de Final','').replace(' 🏆','')}</td><td style="font-size:12px">${g.t1} × ${g.t2}</td><td><strong>${b.g1}×${b.g2}</strong></td><td>${res}</td><td>${bdg(v)}</td></tr>`;
+    const betCell = isAdmin
+      ? `<span style="display:inline-flex;gap:3px;align-items:center"><input type="number" min="0" max="30" id="ppg1-${g.id}" value="${b?b.g1:''}" style="width:34px;text-align:center;padding:3px"><span class="esep" style="font-size:12px">×</span><input type="number" min="0" max="30" id="ppg2-${g.id}" value="${b?b.g2:''}" style="width:34px;text-align:center;padding:3px"><button class="btn btn-g" onclick="svParticipantBet('${pid}',${g.id})" style="font-size:10px;padding:3px 6px">💾</button></span>`
+      : `<strong>${b.g1}×${b.g2}</strong>`;
+    return `<tr><td style="color:var(--sub);width:28px">${g.id}</td><td style="color:var(--dim);font-size:11px;white-space:nowrap">${g.fase.replace(' de Final','').replace(' 🏆','')}</td><td style="font-size:12px">${g.t1} × ${g.t2}</td><td>${betCell}</td><td>${res}</td><td>${bdg(v)}</td></tr>`;
   }).filter(Boolean);
   let html = rows.length? rows.join('') : `<tr><td colspan="6" style="text-align:center;color:var(--sub);padding:20px">Nenhum jogo.</td></tr>`;
-  if(!pf && myBets.length < GAMES.length){
+  if(!isAdmin && !pf && myBets.length < GAMES.length){
     html += `<tr><td colspan="6" style="text-align:center;color:var(--sub);padding:10px;font-size:11px">🔒 ${GAMES.length-myBets.length} palpite(s) ainda oculto(s) até o prazo.</td></tr>`;
   }
   document.getElementById('pp-body').innerHTML = html;
+}
+
+async function svParticipantBet(participantId, gameId){
+  const g1 = parseInt(document.getElementById(`ppg1-${gameId}`).value);
+  const g2 = parseInt(document.getElementById(`ppg2-${gameId}`).value);
+  if(isNaN(g1)||isNaN(g2)||g1<0||g2<0){ alert('Informe dois números ≥ 0.'); return; }
+  const {error} = await sb.from('bets').upsert({ participant_id: participantId, game_id: gameId, g1, g2 }, { onConflict: 'participant_id,game_id' });
+  if(error){ alert('Erro: '+error.message); return; }
+  await loadAll();
+  renderAll();
 }
 
 function renderMP(){

@@ -104,9 +104,23 @@ as $$
   where g.fase = p_fase
 $$;
 
+-- Conjunto de fases já totalmente encerradas, calculado UMA vez por consulta
+-- (em vez de is_phase_visible ser recalculado linha a linha dentro da policy
+-- de bets — com milhares de palpites isso estourava o tempo limite do banco).
+create or replace function visible_fases()
+returns table(fase text)
+language sql stable
+as $$
+  select g.fase
+  from games g
+  group by g.fase
+  having bool_and(now() > effective_deadline(g.id))
+$$;
+
 grant execute on function pts(int,int,int,int) to anon, authenticated;
 grant execute on function effective_deadline(int) to anon, authenticated;
 grant execute on function is_phase_visible(text) to anon, authenticated;
+grant execute on function visible_fases() to anon, authenticated;
 grant execute on function is_admin() to anon, authenticated;
 grant execute on function current_participant_id() to anon, authenticated;
 
@@ -180,7 +194,7 @@ drop policy if exists bets_select on bets;
 create policy bets_select on bets for select using (
   participant_id = current_participant_id()
   or is_admin()
-  or is_phase_visible((select fase from games where id = game_id))
+  or (select fase from games where id = bets.game_id) in (select fase from visible_fases())
 );
 
 drop policy if exists bets_insert on bets;
